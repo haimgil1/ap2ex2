@@ -5,6 +5,9 @@ using System.Net.Sockets;
 
 namespace Server
 {
+    /// <summary>
+    /// Interface : Imodel.
+    /// </summary>
     public interface IModel
     {
         Maze GenerateMaze(string name, int rows, int cols);
@@ -12,19 +15,18 @@ namespace Server
         Solution<Position> solveMazeDFS(string name);
         GameMultiPlayer GenerateGame(string name, int rows, int cols, TcpClient client1);
 
-        void RemoveGameWating(string name);
         bool ContainMaze(string name);
+        void RemoveGameWating(string name);
         void RemoveGamePlaying(string name);
         void AddGamePlaying(string name, GameMultiPlayer game);
       
-        string ListGames();
+        string ListGamesWating();
         GameMultiPlayer FindGameWating(string name);
         GameMultiPlayer FindGamePlaying(string name);
         GameMultiPlayer FindGameByClient(TcpClient client);
 
-        //Dictionary<string, GameMultiPlayer> GetGames();
-        //Dictionary<string, Maze> GetMazes();
-        //bool ContainGamePlaying(string name);
-        //bool ContainGame(string name);
+        bool ClientOnGame(TcpClient client);
+        bool ClientOnGameByName(TcpClient client, string name);
+
     }
 }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Server
 {
     /// <summary>
-    /// Class : AdapterSolution.
+    /// Class : AdapterSolution. The class get a solution and can return the Json format.
     /// </summary>
     class AdapterSolution
     {

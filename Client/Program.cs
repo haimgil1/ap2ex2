@@ -13,7 +13,7 @@ namespace Client
         {
             string port = ConfigurationManager.AppSettings["Port"].ToString();
             int portInt = Int32.Parse(port);
-            ViewClientConnect client = new ViewClientConnect();
+            ClientConnect client = new ClientConnect();
             // connect the client
             client.Connect(portInt);
         }

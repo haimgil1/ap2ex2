@@ -54,19 +54,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdapterSolution.cs" />
-    <Compile Include="ClientHandler.cs" />
+    <Compile Include="Model\AdapterSolution.cs" />
+    <Compile Include="View\ClientHandler.cs" />
     <Compile Include="Commands\CloseGameCommand.cs" />
     <Compile Include="Commands\JoinGamesCommand.cs" />
-    <Compile Include="Controller.cs" />
+    <Compile Include="Control\Controller.cs" />
     <Compile Include="Commands\GenerateMazeCommand.cs" />
-    <Compile Include="GameMultiPlayer.cs" />
-    <Compile Include="IClientHandler.cs" />
-    <Compile Include="ICommand.cs" />
-    <Compile Include="IModel.cs" />
+    <Compile Include="Model\GameMultiPlayer.cs" />
+    <Compile Include="View\IClientHandler.cs" />
+    <Compile Include="Control\ICommand.cs" />
+    <Compile Include="Model\IModel.cs" />
     <Compile Include="Commands\ListGamesCommand.cs" />
-    <Compile Include="Model.cs" />
-    <Compile Include="ModelDataBase.cs" />
+    <Compile Include="Model\Model.cs" />
+    <Compile Include="Model\ModelDataBase.cs" />
     <Compile Include="ObjectAdapter\MazeAdapter.cs" />
     <Compile Include="ObjectAdapter\Program.cs" />
     <Compile Include="Commands\PlayGameCommand.cs" />
@@ -82,7 +82,7 @@
     <Compile Include="SearchAlgorithmsLib\Solution.cs" />
     <Compile Include="SearchAlgorithmsLib\StackSearcher.cs" />
     <Compile Include="SearchAlgorithmsLib\State.cs" />
-    <Compile Include="ServerConnect.cs" />
+    <Compile Include="View\ServerConnect.cs" />
     <Compile Include="Commands\SolveMazeCommand.cs" />
     <Compile Include="Commands\StartMazeCommand.cs" />
   </ItemGroup>

@@ -9,9 +9,13 @@ namespace Server
 {
     public class Program
     {
+        /// <summary>
+        /// Mains the specified arguments. The main of the Program.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
         static void Main(string[] args)
         {
-            
+            // Get the port from the App.config.
             string port = ConfigurationManager.AppSettings["Port"].ToString();
             int portInt = Int32.Parse(port);
 
