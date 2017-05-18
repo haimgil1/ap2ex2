@@ -6,15 +6,15 @@
         xmlns:local="clr-namespace:WpfMaze"
         xmlns:controls="clr-namespace:WpfMaze"
         mc:Ignorable="d"
-        Title="SingleMazeWindow" Height="600" Width="600">
+        Title="{Binding VM_MazeName}" Height="600" Width="600">
     <Grid>
-        <Button x:Name="RestartGame" Content="Main menu" HorizontalAlignment="Left" Margin="208,14,0,0" VerticalAlignment="Top" Width="75" />
-        <Button x:Name="SolveMaze" Content="Solve maze" HorizontalAlignment="Left" Margin="115,15,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="MainMenu" Content="Restart game" HorizontalAlignment="Left" Margin="18,15,0,0" VerticalAlignment="Top" Width="75" Click="MainMenu_Click"/>
+        <Button x:Name="RestartGame" Content="Restart game" HorizontalAlignment="Left" Margin="208,14,0,0" VerticalAlignment="Top" Width="75" Click="Restart_Click"/>
+        <Button x:Name="SolveMaze" Content="Solve maze" HorizontalAlignment="Left" Margin="115,15,0,0" VerticalAlignment="Top" Width="75" Click="Solve_Click"/>
+        <Button x:Name="MainMenu" Content="Main menu" HorizontalAlignment="Left" Margin="18,15,0,0" VerticalAlignment="Top" Width="75" Click="MainMenu_Click"/>
 
 
         <!--<local:MazeControl x:Name="grid" Canvas.Left="385" Rows="{Binding VM_MazeRows}" Cols="{Binding VM_MazeCols}" Maze="1000001011110001000110110100000101111000100011011" Height="500" Width="500" Canvas.Top="113" Margin="49,60,43,10"/>-->
-        <local:MazeControl x:Name="grid" Canvas.Left="385" Rows="{Binding VM_MazeRows}" 
+        <local:MazeControl x:Name="mazeControl" Canvas.Left="385" Rows="{Binding VM_MazeRows}" 
         Cols="{Binding VM_MazeCols}" MazeName="{Binding VM_MazeString}" InitialPos="{Binding VM_InitialPos}"
         GoalPos="{Binding VM_GoalPos}" Height="500" Width="500" Canvas.Top="113" Margin="49,60,43,10"/>
 

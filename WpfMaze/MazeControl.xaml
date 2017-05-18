@@ -13,5 +13,15 @@
                 </Canvas>
             </Border>
         </Viewbox>
+        <Rectangle> 
+            <Rectangle.Fill>
+                <ImageBrush x:Name="MinyonImage" ImageSource="minion.jpg"/>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle>
+            <Rectangle.Fill>
+                <ImageBrush x:Name="ExitImage" ImageSource="exit.jpg"/>
+            </Rectangle.Fill>
+        </Rectangle>
     </Grid>
 </UserControl>

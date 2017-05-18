@@ -30,8 +30,7 @@
             </controls:DetailsControl.Background>
 
         </controls:DetailsControl>
-        <Button x:Name="btnOk" Grid.Row="3" HorizontalAlignment="Left" Width="75" Click="btnStart_Click" Margin="95,322,0,-52" Padding="5" Height="32" VerticalAlignment="Top" Grid.ColumnSpan="2">ok</Button>
-        <Button x:Name="cancelOk" Grid.Row="3" HorizontalAlignment="Left" Width="74" Click="btnCancel_Click" Margin="284,0,0,-50.667" Padding="5" Grid.Column="1" Height="32" VerticalAlignment="Bottom">cancel</Button>
+        <Button x:Name="btnStart" Grid.Row="3" HorizontalAlignment="Center" Width="92" Click="btnStart_Click" Margin="204,324.6,204.8,-52.2" Padding="5" Height="32" VerticalAlignment="Top" Grid.ColumnSpan="2">Start game</Button>
 
     </Grid>
 </Window>

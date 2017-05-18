@@ -67,6 +67,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EndGameWindow.xaml.cs">
+      <DependentUpon>EndGameWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\ApplicationSettingsModel.cs" />
     <Compile Include="ClientConnect.cs" />
     <Compile Include="ClientWpf.cs" />
@@ -91,7 +94,14 @@
       <DependentUpon>SinglePlayerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel.cs" />
+    <Compile Include="WinWindow.xaml.cs">
+      <DependentUpon>WinWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="DetailsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EndGameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -122,6 +132,10 @@
     <Page Include="SinglePlayer\SinglePlayerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WinWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +174,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="exit.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Minion.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

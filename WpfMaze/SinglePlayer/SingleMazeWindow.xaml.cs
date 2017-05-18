@@ -28,19 +28,44 @@ namespace WpfMaze
             vm = new SinglePlayerViewModel(new SinglePlayerModel());
             this.DataContext = vm;
             vm.VM_GenerateMaze();
-            this.KeyDown += new System.Windows.Input.KeyEventHandler(grid.Grid_KeyDown);
+            this.KeyDown += new System.Windows.Input.KeyEventHandler(mazeControl.Grid_KeyDown);
         }
 
 
         private void MainMenu_Click(object sender, RoutedEventArgs e)
         {
-            // MainWindow win =  new MainWindow();
-
-            MainWindow win = (MainWindow)Application.Current.MainWindow;
-
-            win.Show();
-            this.Close();
+            EndGameWindow endGame = new EndGameWindow();
+            //check.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            endGame.ShowDialog();
+            if (endGame.Resualt)
+            {
+                MainWindow win = (MainWindow)Application.Current.MainWindow;
+                win.Show();
+                this.Close();
+            }
+            
         }
+
+        private void Restart_Click(object sender, RoutedEventArgs e)
+        {
+            EndGameWindow endGame = new EndGameWindow();
+            endGame.ShowDialog();
+            if (endGame.Resualt)
+            {
+                int i = mazeControl.CurrPosition.Row;
+                int j = mazeControl.CurrPosition.Col;
+                mazeControl.AddRectToGrid(i,j);
+            }
+
+        }
+
+        private void Solve_Click(object sender, RoutedEventArgs e)
+        {
+           
+
+        }
+
+
 
 
     }

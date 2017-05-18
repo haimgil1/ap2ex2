@@ -49,7 +49,7 @@ namespace WpfMaze
 
         public string GenerateMaze()
         {
-            string mazeString = "generate" + " " + this.MazeName + " " + this.MazeRows +
+            string mazeString = "generate " + this.MazeName + " " + this.MazeRows +
                 " " + this.MazeCols;
             this.client.Connect();
             this.client.AddCommand(mazeString);

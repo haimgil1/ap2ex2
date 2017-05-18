@@ -20,6 +20,7 @@ namespace WpfMaze
         private string mazeName;
         private Position initialPos;
         private Position goalPos;
+        private Position currPosition;
         private Maze mazeFromJson;
         private double hightRect;
         private double widthRect;
@@ -35,37 +36,20 @@ namespace WpfMaze
             grid.ShowGridLines = true;
         }
 
-        public Image PlayerImageFile
-        {
-            get;
-            set;
-        }
-        public string Name
-        {
-            get;
-            set;
-        }
-        public Image ExitImageFile
-        {
-            get;
-            set;
-        }
-        public int Cols
-        {
-            get;
-            set;
-        }
-        public int Rows
-        {
-            get;
-            set;
-        }
+
+        public Image PlayerImageFile { get; set; }
+        public Image ExitImageFile { get; set; }
+        public int Cols { get; set; }
+        public int Rows { get; set; }
+        public double HightRect { get; set; }
+        public double WidthRect { get; set; }
+        public Grid Grid { get; set; }
+
         public string MazeName
         {
             get
             {
                 return this.mazeName;
-
             }
             set
             {
@@ -77,17 +61,27 @@ namespace WpfMaze
         }
 
         public Maze MazeFromJason { get; set; }
+
         public Position InitialPos
+        {
+            get { return this.initialPos; }
+            set
+            {
+                this.initialPos = value;
+                CurrPosition = this.initialPos;
+            }
+          
+        }
+        public Position CurrPosition
         {
             get
             {
-                return this.initialPos;
+                return this.currPosition;
             }
             set
             {
-                //string path = "C:\Users\chene\OneDrive\Documents\Visual Studio 2015\Projects\Server\WpfMaze\minion.jpg"
-                this.initialPos = value;
-                this.DrawInitialPos(value, Colors.Red, 0);
+                this.currPosition = value;
+                this.DrawInitialPos(value, 0);
             }
         }
         public Position GoalPos
@@ -99,7 +93,7 @@ namespace WpfMaze
             set
             {
                 this.goalPos = value;
-                this.DrawInitialPos(value, Colors.Purple, 1);
+                this.DrawInitialPos(value, 1);
             }
         }
 
@@ -159,7 +153,7 @@ namespace WpfMaze
 
         public void DrawMaze(string str)
         {
-           
+
             this.hightRect = this.hight / Rows;
             this.widthRect = this.width / Cols;
 
@@ -170,7 +164,7 @@ namespace WpfMaze
             {
                 for (int j = 0; j < Cols; j++)
                 {
-                    Rectangle rect = this.AddRectToGrid(i, j, hightRect, widthRect);
+                    Rectangle rect = this.GetRectToGrid(i, j);
 
                     int placeInString = (i * Cols) + j;
                     if (str[placeInString] == '0')
@@ -206,28 +200,24 @@ namespace WpfMaze
             }
         }
 
-        private void DrawInitialPos(Position pos, Color color, int path)
+        private void DrawInitialPos(Position pos, int flag)
         {
-            double hightRect = this.hight / Rows;
-            double widthRect = this.width / Cols;
-            // split the string for get two strings of numbers.
-            //string[] subStrings = str.Split(',');
-            //string xStr = subStrings[0].Remove(0, 1);
-            //string yStr = subStrings[1].Remove(subStrings[1].Length - 1, 1);
-            //// convert the string to int.
-            //int x = Convert.ToInt32(xStr);
-            //int y = Convert.ToInt32(yStr);
+            //double hightRect = this.hight / Rows;
+            //double widthRect = this.width / Cols;
             int x = pos.Row;
             int y = pos.Col;
-            Rectangle rect = this.AddRectToGrid(x, y, hightRect, widthRect);
-            // rect.Fill = new SolidColorBrush(color);
+            Rectangle rect = this.GetRectToGrid(x, y);
 
-            if (path == 0)
-                rect.Fill = new ImageBrush(new BitmapImage(new
-                    Uri(@"C:\Users\חיים\Downloads\קוד של חן\Server\WpfMaze\minion.jpg", UriKind.Relative)));
+            if (flag == 0)
+            {
+                rect.Fill = MinyonImage;
+            }
+
             else
-                rect.Fill = new ImageBrush(new BitmapImage(new
-                Uri(@"C:\Users\חיים\Downloads\קוד של חן\Server\WpfMaze\exit.jpg", UriKind.Relative)));
+            {
+                rect.Fill = ExitImage;
+            }
+
             grid.Children.Add(rect);
         }
 
@@ -236,38 +226,45 @@ namespace WpfMaze
 
         //    int x = (int)Char.GetNumericValue(GoalPos[1]);
         //    int y = (int)Char.GetNumericValue(GoalPos[3]);
-        //    Rectangle rect = this.AddRectToGrid(x, y, hightRect, widthRect);
+        //    Rectangle rect = this.GetRectToGrid(x, y, hightRect, widthRect);
         //    rect.Fill = new SolidColorBrush(Colors.Red);
         //}
 
-        private Rectangle AddRectToGrid(int x, int y, double hightRect, double widthRect)
+        public Rectangle GetRectToGrid(int x, int y)
         {
             Rectangle rect = new Rectangle();
-            rect.Height = hightRect;
-            rect.Width = widthRect;
+            rect.Height = this.hightRect;
+            rect.Width = this.widthRect;
             Grid.SetRow(rect, x);
             Grid.SetColumn(rect, y);
             return rect;
         }
-
-        public void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        public void AddRectToGrid(int i,int j)
         {
-            int row = initialPos.Row, col = initialPos.Col;
+            Rectangle rect = this.GetRectToGrid(i, j);
+            rect.Fill = new SolidColorBrush(Colors.White);
+            grid.Children.Add(rect); // its not a wall
+
+        }
+
+        public void Grid_KeyDown(object sender, KeyEventArgs e)
+        {
+            int row = currPosition.Row, col = currPosition.Col;
             Position newPosition = new Position();
 
             switch (e.Key)
             {
                 case Key.Down:
-                    row = initialPos.Row + 1;
+                    row = currPosition.Row + 1;
                     break;
                 case Key.Up:
-                    row = initialPos.Row - 1;
+                    row = currPosition.Row - 1;
                     break;
                 case Key.Left:
-                    col = initialPos.Col - 1;
+                    col = currPosition.Col - 1;
                     break;
                 case Key.Right:
-                    col = initialPos.Col + 1;
+                    col = currPosition.Col + 1;
                     break;
                 default:
                     break;
@@ -276,44 +273,28 @@ namespace WpfMaze
             newPosition.Col = col;
             if (row >= 0 && row < Rows && col >= 0 && col < Cols)
             {
-                int i = initialPos.Row, j = initialPos.Col;
+                int i = currPosition.Row, j = currPosition.Col;
                 if (this.mazeFromJson[row, col] == CellType.Free)
                 {
-                    InitialPos = newPosition;
-                    Rectangle rect = this.AddRectToGrid(i, j, hightRect, widthRect);
-                    rect.Fill = new SolidColorBrush(Colors.White);
-                    grid.Children.Add(rect); // its not a wall
+                    CurrPosition = newPosition;
+                    AddRectToGrid(i,j);
+
+                }
+
+                if (this.goalPos.Row == row && this.goalPos.Col == col)
+                {
+                    WinWindow winWindow = new WinWindow();
+                    winWindow.ShowDialog();
+                    if (winWindow.Resualt)
+                    {
+
+                        MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
+                        mainWindow.Show();
+                        //this.Close();
+                        //todo 
+                    }
                 }
             }
-
-            //void Move(object sender, KeyEventArgs e)
-            //{
-            //    ViewModel vm = ViewModel.Instance;
-            //    switch (e.Key)
-            //    {
-            //        case Key.Up:
-            //            vm.Move((int)Direction.UP);
-            //            break;
-            //        case Key.Down:
-            //            vm.Move((int)Direction.DOWN);
-            //            break;
-            //        case Key.Right:
-            //            vm.Move((int)Direction.RIGHT);
-            //            break;
-            //        case Key.Left:
-            //            vm.Move((int)Direction.LEFT);
-            //            break;
-            //    }
-            //    // if the player reach to the end
-            //    if (vm.VM_MyRow == vm.VM_End.Row && vm.VM_MyCol == vm.VM_End.Col)
-            //    {
-            //        WinWindow win = new WinWindow();
-            //        win.ShowDialog();
-            //        // vm.EndGame();
-            //        Window window = Window.GetWindow(this);
-            //        window.Content = new Menu();
-            //    }
-            //}
         }
     }
 }
