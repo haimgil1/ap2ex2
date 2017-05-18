@@ -92,6 +92,11 @@ namespace WpfMaze
             VM_GoalPos = maze.GoalPos;
         }
 
+        //public string VM_SolveMaze()
+        //{
+        //    return this.model.SolveMaze();
+        //}
+
 
     }
 }

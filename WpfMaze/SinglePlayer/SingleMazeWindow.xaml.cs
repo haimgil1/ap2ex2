@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MazeLib;
 
 namespace WpfMaze
 {
@@ -28,14 +29,13 @@ namespace WpfMaze
             vm = new SinglePlayerViewModel(new SinglePlayerModel());
             this.DataContext = vm;
             vm.VM_GenerateMaze();
-            this.KeyDown += new System.Windows.Input.KeyEventHandler(mazeControl.Grid_KeyDown);
+            this.KeyDown += new System.Windows.Input.KeyEventHandler(Grid_KeyDown);
         }
 
 
         private void MainMenu_Click(object sender, RoutedEventArgs e)
         {
             EndGameWindow endGame = new EndGameWindow();
-            //check.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             endGame.ShowDialog();
             if (endGame.Resualt)
             {
@@ -65,6 +65,56 @@ namespace WpfMaze
 
         }
 
+
+        public void Grid_KeyDown(object sender, KeyEventArgs e)
+        {
+            int row = mazeControl.CurrPosition.Row, col = mazeControl.CurrPosition.Col;
+            Position newPosition = new Position();
+
+            switch (e.Key)
+            {
+                case Key.Down:
+                    row = mazeControl.CurrPosition.Row + 1;
+                    break;
+                case Key.Up:
+                    row = mazeControl.CurrPosition.Row - 1;
+                    break;
+                case Key.Left:
+                    col = mazeControl.CurrPosition.Col - 1;
+                    break;
+                case Key.Right:
+                    col = mazeControl.CurrPosition.Col + 1;
+                    break;
+                default:
+                    break;
+            }
+            newPosition.Row = row;
+            newPosition.Col = col;
+            if (row >= 0 && row < mazeControl.Rows && col >= 0 && col < mazeControl.Cols)
+            {
+                int i = mazeControl.CurrPosition.Row, j = mazeControl.CurrPosition.Col;
+                if (mazeControl.MazeFromJson[row, col] == CellType.Free)
+                {
+                    mazeControl.CurrPosition = newPosition;
+                    mazeControl.AddRectToGrid(i, j);
+
+                }
+
+                if (mazeControl.GoalPos.Row == row && mazeControl.GoalPos.Col == col)
+                {
+                    WinWindow winWindow = new WinWindow();
+                    winWindow.ShowDialog();
+                    if (winWindow.Resualt)
+                    {
+
+                        MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
+                        mainWindow.Show();
+                        //this.Close();
+                        //todo 
+                    }
+                }
+            }
+        }
 
 
 

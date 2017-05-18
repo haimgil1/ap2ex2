@@ -45,6 +45,12 @@ namespace WpfMaze
         public double WidthRect { get; set; }
         public Grid Grid { get; set; }
 
+        public Maze MazeFromJson
+        {
+            get { return this.mazeFromJson; }
+            set { this.mazeFromJson = value; }
+        }
+
         public string MazeName
         {
             get
@@ -53,14 +59,14 @@ namespace WpfMaze
             }
             set
             {
-                this.mazeFromJson = Maze.FromJSON(value);
+                MazeFromJson = Maze.FromJSON(value);
                 this.mazeName = mazeFromJson.Name;
                 this.DrawMaze(mazeFromJson.ToString().Replace("\r\n", ""));
 
             }
         }
 
-        public Maze MazeFromJason { get; set; }
+        
 
         public Position InitialPos
         {
@@ -167,11 +173,7 @@ namespace WpfMaze
                     Rectangle rect = this.GetRectToGrid(i, j);
 
                     int placeInString = (i * Cols) + j;
-                    if (str[placeInString] == '0')
-                    {
-                        rect.Fill = new SolidColorBrush(Colors.White);
-                    }
-                    else
+                    if (str[placeInString] == '1')
                     {
                         rect.Fill = new SolidColorBrush(Colors.Black);
                     }
@@ -247,54 +249,6 @@ namespace WpfMaze
 
         }
 
-        public void Grid_KeyDown(object sender, KeyEventArgs e)
-        {
-            int row = currPosition.Row, col = currPosition.Col;
-            Position newPosition = new Position();
-
-            switch (e.Key)
-            {
-                case Key.Down:
-                    row = currPosition.Row + 1;
-                    break;
-                case Key.Up:
-                    row = currPosition.Row - 1;
-                    break;
-                case Key.Left:
-                    col = currPosition.Col - 1;
-                    break;
-                case Key.Right:
-                    col = currPosition.Col + 1;
-                    break;
-                default:
-                    break;
-            }
-            newPosition.Row = row;
-            newPosition.Col = col;
-            if (row >= 0 && row < Rows && col >= 0 && col < Cols)
-            {
-                int i = currPosition.Row, j = currPosition.Col;
-                if (this.mazeFromJson[row, col] == CellType.Free)
-                {
-                    CurrPosition = newPosition;
-                    AddRectToGrid(i,j);
-
-                }
-
-                if (this.goalPos.Row == row && this.goalPos.Col == col)
-                {
-                    WinWindow winWindow = new WinWindow();
-                    winWindow.ShowDialog();
-                    if (winWindow.Resualt)
-                    {
-
-                        MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
-                        mainWindow.Show();
-                        //this.Close();
-                        //todo 
-                    }
-                }
-            }
-        }
+        
     }
 }

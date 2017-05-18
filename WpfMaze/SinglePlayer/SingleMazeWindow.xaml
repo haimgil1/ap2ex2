@@ -7,7 +7,7 @@
         xmlns:controls="clr-namespace:WpfMaze"
         mc:Ignorable="d"
         Title="{Binding VM_MazeName}" Height="600" Width="600">
-    <Grid>
+    <Grid >
         <Button x:Name="RestartGame" Content="Restart game" HorizontalAlignment="Left" Margin="208,14,0,0" VerticalAlignment="Top" Width="75" Click="Restart_Click"/>
         <Button x:Name="SolveMaze" Content="Solve maze" HorizontalAlignment="Left" Margin="115,15,0,0" VerticalAlignment="Top" Width="75" Click="Solve_Click"/>
         <Button x:Name="MainMenu" Content="Main menu" HorizontalAlignment="Left" Margin="18,15,0,0" VerticalAlignment="Top" Width="75" Click="MainMenu_Click"/>
