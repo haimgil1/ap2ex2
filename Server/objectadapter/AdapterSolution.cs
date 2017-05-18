@@ -17,7 +17,6 @@ namespace Server
     {
         private Solution<Position> solution;
         private string name;
-        private int nodesEvaluated;
 
         /// <summary>
         /// Constructor AdapterSolution.
@@ -25,11 +24,10 @@ namespace Server
         /// <param name="newSolution"></param>
         /// <param name="newName"></param>
         /// <param name="newNodesEvaluated"></param>
-        public AdapterSolution(Solution<Position> newSolution, string newName, int newNodesEvaluated)
+        public AdapterSolution(Solution<Position> newSolution, string newName)
         {
             this.solution = newSolution;
             this.name = newName;
-            this.nodesEvaluated = newNodesEvaluated;
         }
 
         /// <summary>
@@ -39,7 +37,7 @@ namespace Server
         public string ToJson()
         {
             string strSolution = MazeAdapter.ToString(this.solution);
-            NestedAdapterSolution nested = new NestedAdapterSolution(name, strSolution, nodesEvaluated);
+            NestedAdapterSolution nested = new NestedAdapterSolution(name, strSolution, solution.EvaluatedNodes);
             return JsonConvert.SerializeObject(nested);
         }
 

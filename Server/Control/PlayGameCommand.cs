@@ -35,6 +35,10 @@ namespace Server
 
         public string Execute(string[] args, TcpClient client)
         {
+            if (!CheckValid(args, client))
+            {
+                return "multiPlayer";
+            }
             string direction = args[0];
             // Get the game of the client who press play.
             GameMultiPlayer game = model.FindGameByClient(client);
@@ -56,6 +60,22 @@ namespace Server
                 Controller.NestedErrors error = new Controller.NestedErrors("you need to start a game", client);
             }
             return "multiPlayer";
+        }
+        /// <summary>
+        /// Checks the valid.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <param name="client">The client.</param>
+        /// <returns></returns>
+        public bool CheckValid(string[] args, TcpClient client)
+        {
+            if (args.Length > 1 || args.Length < 1)
+            {
+                Controller.NestedErrors nested = new Controller.NestedErrors("Bad arguement", client);
+                return false;
+            }
+            return true;
+            
         }
         /// <summary>
         /// class: NestedPlay.

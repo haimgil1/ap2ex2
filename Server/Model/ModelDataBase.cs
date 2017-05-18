@@ -40,6 +40,7 @@ namespace Server
             gameWating = new Dictionary<string, GameMultiPlayer>();
             gamesPlaying = new Dictionary<string, GameMultiPlayer>();
         }
+
         /// <summary>
         /// Gets the mazes.
         /// </summary>
@@ -50,6 +51,7 @@ namespace Server
         {
             get { return mazes; }
         }
+
         /// <summary>
         /// Gets the BFS solutions.
         /// </summary>
@@ -60,6 +62,7 @@ namespace Server
         {
             get { return bfsSolutions; }
         }
+
         /// <summary>
         /// Gets the DFS solutions.
         /// </summary>
@@ -80,6 +83,7 @@ namespace Server
         {
             get { return gameWating; }
         }
+
         /// <summary>
         /// Gets the games playing.
         /// </summary>

@@ -49,17 +49,17 @@ namespace Server
             int cols = int.Parse(args[2]);
             // Check if the maze exist.
             if (!model.ContainMaze(name))
-            { 
+            {
                 // Create a new maze.
                 Maze maze = model.GenerateMaze(name, rows, cols);
                 maze.Name = name;
                 // Send the maze to the client.
-                Controller.SendToClient(maze.ToJSON(), client); 
+                Controller.SendToClient(maze.ToJSON().Replace("\r\n", ""), client); 
             }
             else
             {
                 // Send to client that the game exist.
-                Controller.NestedErrors nested = new Controller.NestedErrors("Maze exist", client);
+                Controller.NestedErrors nested = new Controller.NestedErrors("Maze not exist", client);
             }
             
             if (model.ClientOnGame(client))

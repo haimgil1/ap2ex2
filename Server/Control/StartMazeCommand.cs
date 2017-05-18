@@ -1,4 +1,4 @@
-﻿using MazeLib;
+using MazeLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,14 +31,18 @@ namespace Server
             {
                 return "multiPlayer";
             }
+		    model.GetmodelData().mutexGamePlaying.WaitOne();
+		    model.GetmodelData().mutexGameWating.WaitOne();
             string name = args[0];
             int rows = int.Parse(args[1]);
             int cols = int.Parse(args[2]);
             // Get the game from the model.
             GameMultiPlayer game = model.GenerateGame(name, rows, cols, client);
+		    model.GetmodelData().mutexGamePlaying.ReleaseMutex();
+		    model.GetmodelData().mutexGameWating.ReleaseMutex();
             if (game == null)
             {
-                Controller.NestedErrors nested = new Controller.NestedErrors("Error exist game", client);
+                Controller.NestedErrors nested = new Controller.NestedErrors("game not exist", client);
             }
             return "multiPlayer";
         }

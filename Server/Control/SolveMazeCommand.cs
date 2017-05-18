@@ -54,11 +54,11 @@ namespace Server
             // If the solution is not null send the solution to the client. Else send a message.
             if (s != null)
             {
-                adpterSolution = new AdapterSolution(s, name, s.SolutionSize());
+                adpterSolution = new AdapterSolution(s, name);
                 Controller.SendToClient(adpterSolution.ToJson(), client);
             } else
             {
-                Controller.NestedErrors nested = new Controller.NestedErrors("maze exist", client);
+                Controller.NestedErrors nested = new Controller.NestedErrors("maze not exist", client);
             }
             if (model.ClientOnGame(client))
             {
@@ -75,7 +75,7 @@ namespace Server
         /// <returns></returns>
         public bool CheckValid(string[] args, TcpClient client)
         {
-            if (args.Length > 2)
+            if (args.Length > 2 || args.Length < 2)
             {
                 Controller.NestedErrors nested = new Controller.NestedErrors("Bad arguement", client);
                 return false;

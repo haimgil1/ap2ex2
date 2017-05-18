@@ -41,7 +41,11 @@ namespace Server
             string[] arr = commandLine.Split(' ');
             string commandKey = arr[0];
             if (!commands.ContainsKey(commandKey))
-                return "Command not found";
+            {
+                new NestedErrors("Command not found", client);
+                return "singlePlayer";
+            }
+                    
             string[] args = arr.Skip(1).ToArray();
             ICommand command = commands[commandKey];
             return command.Execute(args, client);

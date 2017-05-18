@@ -3,42 +3,81 @@ using System.Collections.Generic;
 
 namespace SearchAlgorithmsLib
 {
-	public class PriorityQueue<T>
-	{
-		private List<T> list;
-		public PriorityQueue()
-		{
-			this.list = new List<T>();
-		}
+    /// <summary>
+    /// Priority queue.
+    /// </summary>
+    public class PriorityQueue<T>
+    {
+        /// <summary>
+        /// The queue.
+        /// </summary>
+        private List<T> queue;
+        /// <summary>
+        /// The comparer.
+        /// </summary>
+        private Comparer<T> comparer;
 
-		public void Enqueue(T item)
-		{
-			this.list.Add(item);
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:SearchAlgorithmsLib.PriorityQueue`1"/> class.
+        /// </summary>
+        public PriorityQueue(Comparer<T> comparer)
+        {
+            this.queue = new List<T>();
+            this.comparer = comparer;
+        }
 
-		public int Count()
-		{
-			return this.list.Count;
-		}
+        /// <summary>
+        /// Enqueue the specified item.
+        /// </summary>
+        /// <returns>The enqueue.</returns>
+        /// <param name="item">Item.</param>
+        public void Enqueue(T item)
+        {
+            this.queue.Add(item);
+        }
 
-		public bool Contains(T item)
-		{
-			return list.Contains(item);
-		}
+        /// <summary>
+        /// Count this instance.
+        /// </summary>
+        /// <returns>The count.</returns>
+        public int Count()
+        {
+            return this.queue.Count;
+        }
 
-		public T Dequeue()
-		{
-			if (this.list.Count == 0)
-			{
-				throw new IndexOutOfRangeException();
-			}
-			else
-			{
-				list.Sort();
-				T item = list[0];
-				this.list.Remove(item);
-				return item;
-			}
-		}
-	}
+        /// <summary>
+        /// Ises the empty.
+        /// </summary>
+        /// <returns><c>true</c>, if empty was ised, <c>false</c> otherwise.</returns>
+        public bool IsEmpty()
+        {
+            return this.queue.Count == 0;
+        }
+
+        /// <summary>
+        /// Contains the specified item.
+        /// </summary>
+        /// <returns>The contains.</returns>
+        /// <param name="item">Item.</param>
+        public bool Contains(T item)
+        {
+            return queue.Contains(item);
+        }
+
+        /// <summary>
+        /// Dequeue this instance.
+        /// </summary>
+        /// <returns>The dequeue.</returns>
+        public T Dequeue()
+        {
+            if (IsEmpty())
+            {
+                throw new IndexOutOfRangeException();
+            }
+            queue.Sort(this.comparer);
+            T item = queue[0];
+            this.queue.Remove(item);
+            return item;
+        }
+    }
 }

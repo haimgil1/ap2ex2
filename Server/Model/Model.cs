@@ -25,6 +25,16 @@ namespace Server
         {
             modelData = new ModelDataBase();
         }
+
+        /// <summary>
+        /// Getmodels the data.
+        /// </summary>
+        /// <returns>The data.</returns>
+        public ModelDataBase GetmodelData()
+        {
+            return modelData;
+        }
+
         /// <summary>
         /// Generates the maze.
         /// </summary>
@@ -44,6 +54,7 @@ namespace Server
             modelData.mutexMazes.ReleaseMutex();
             return maze;
         }
+
         /// <summary>
         /// Solves the maze BFS.
         /// </summary>
@@ -51,12 +62,13 @@ namespace Server
         /// <returns>Solution</returns>
         public Solution<Position> solveMazeBFS(string name)
         {
+            modelData.mutexBfs.WaitOne();
             Solution<Position> solution = null;
             // Check if the maze exist.
             if (modelData.Mazes.ContainsKey(name))
             {
                 ISearchable<Position> mazeObjectAdapter = new MazeAdapter(modelData.Mazes[name]);
-                ISearcher<Position> BFS = new Bfs<Position>();
+                ISearcher<Position> BFS = new BestFirstSearch<Position>();
                 // Check if the solution exist.
                 if (modelData.BfsSolutions.ContainsKey(name))
                 {
@@ -69,9 +81,14 @@ namespace Server
                     modelData.BfsSolutions.Add(name, solution);
                 }
             }
+
+           
+            //State<Position>.StatePool.Clear();
+            modelData.mutexBfs.ReleaseMutex();
             return solution;
 
         }
+
         /// <summary>
         /// Solves the maze DFS.
         /// </summary>
@@ -79,6 +96,7 @@ namespace Server
         /// <returns>Solution</returns>
         public Solution<Position> solveMazeDFS(string name)
         {
+            modelData.mutexDfs.WaitOne();
             Solution<Position> solution = null;
             // Check if the maze exist.
             if (modelData.Mazes.ContainsKey(name))
@@ -97,8 +115,12 @@ namespace Server
                     modelData.DfsSolutions.Add(name, solution);
                 }
             }
+
+            //State<Position>.StatePool.Clear();
+            modelData.mutexDfs.ReleaseMutex();
             return solution;
         }
+
         /// <summary>
         /// Generates the game.
         /// </summary>
@@ -126,6 +148,7 @@ namespace Server
             return game;
 
         }
+
         /// <summary>
         /// Adds the game playing.
         /// </summary>
@@ -144,6 +167,7 @@ namespace Server
         {
             modelData.GameWating.Remove(name);
         }
+
         /// <summary>
         /// Removes the game playing.
         /// </summary>
@@ -152,6 +176,7 @@ namespace Server
         {
             modelData.GamesPlaying.Remove(name);
         }
+
         /// <summary>
         /// Check if contains the maze.
         /// </summary>
@@ -161,6 +186,7 @@ namespace Server
         {
             return modelData.Mazes.ContainsKey(name);
         }
+
         /// <summary>
         /// Lists the games wating.
         /// </summary>
@@ -169,6 +195,7 @@ namespace Server
         {
             return JsonConvert.SerializeObject(modelData.GameWating.Keys);
         }
+
         /// <summary>
         /// Finds the game wating.
         /// </summary>
@@ -182,6 +209,7 @@ namespace Server
             }
             return null;
         }
+
         /// <summary>
         /// Finds the game playing.
         /// </summary>
@@ -195,6 +223,7 @@ namespace Server
             }
             return null;
         }
+
         /// <summary>
         /// Finds the game by client.
         /// </summary>
@@ -223,6 +252,7 @@ namespace Server
             }
             return game;
         }
+
         /// <summary>
         /// Clients the on game.
         /// </summary>
@@ -230,12 +260,9 @@ namespace Server
         /// <returns>bool</returns>
         public bool ClientOnGame(TcpClient client)
         {
-            if (this.FindGameByClient(client) != null)
-            {
-                return true;
-            }
-            return false;
+            return (this.FindGameByClient(client) != null);
         }
+
         /// <summary>
         /// Find if the client exist in game.
         /// </summary>
@@ -246,13 +273,14 @@ namespace Server
         {
             if (modelData.GameWating.ContainsKey(name))
             {
-                if(modelData.GameWating[name].GetClient1() == client ||
+                if (modelData.GameWating[name].GetClient1() == client ||
                     modelData.GameWating[name].GetClient2() == client)
                 {
                     return true;
                 }
-            } 
-            else if (modelData.GamesPlaying.ContainsKey(name)) {
+            }
+            else if (modelData.GamesPlaying.ContainsKey(name))
+            {
                 if (modelData.GamesPlaying[name].GetClient1() == client ||
                     modelData.GamesPlaying[name].GetClient2() == client)
                 {

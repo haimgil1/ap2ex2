@@ -95,7 +95,7 @@ namespace Server
             {
                 return client2;
             }
-            else return client1;
+            return client1; // client==client2
         }
 
     }

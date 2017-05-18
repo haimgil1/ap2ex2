@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,6 +38,8 @@ namespace Server.Commands
             {
                 return "multiPlayer";
             }
+		    model.GetmodelData().mutexGamePlaying.WaitOne();
+		    model.GetmodelData().mutexGameWating.WaitOne();
             // the name of the game to join.
             string name = args[0];
             GameMultiPlayer game = model.FindGameWating(name);
@@ -56,7 +58,9 @@ namespace Server.Commands
             else
             {
                 Controller.NestedErrors nested = new Controller.NestedErrors("Error exist game", client);
-            }
+		}
+		    model.GetmodelData().mutexGamePlaying.ReleaseMutex();
+		    model.GetmodelData().mutexGameWating.ReleaseMutex();
             return "multiPlayer";
         }
 
