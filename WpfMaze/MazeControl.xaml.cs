@@ -252,8 +252,6 @@ namespace WpfMaze
             Rectangle rect = this.GetRectToGrid(i, j);
             rect.Fill = new SolidColorBrush(Colors.White);
             grid.Children.Add(rect);
-
-
         }
 
         public void SolvingMaze(string solution)

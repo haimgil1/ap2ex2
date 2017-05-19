@@ -85,9 +85,6 @@ namespace WpfMaze
             VM_MazeRows = maze.Rows;
             VM_MazeCols = maze.Cols;
             VM_MazeString = str;
-                //maze.ToString().Replace("\r\n", "");
-
-            
             VM_InitialPos = maze.InitialPos;
             VM_GoalPos = maze.GoalPos;
         }
@@ -97,10 +94,7 @@ namespace WpfMaze
             return this.model.SolveMaze();
         }
 
-        //public void VM_CloseMaze()
-        //{
-        //    this.model.CloseMaze();
-        //}
+
 
 
     }

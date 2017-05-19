@@ -48,6 +48,7 @@ namespace WpfMaze
             
         }
 
+
         private void Restart_Click(object sender, RoutedEventArgs e)
         {
             WarningWindow endGame = new WarningWindow();
@@ -73,7 +74,6 @@ namespace WpfMaze
                 mazeControl.SolvingMaze(solution);
             });
             task.Start();
-           // mazeControl.SolvingMaze(solution);
         }
 
 
@@ -121,7 +121,6 @@ namespace WpfMaze
                         MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
                         mainWindow.Show();
                         this.Close();
-                        //todo 
                     }
                 }
             }

@@ -51,22 +51,32 @@ namespace WpfMaze
         {
             string mazeString = "generate " + this.MazeName + " " + this.MazeRows +
                 " " + this.MazeCols;
-            this.client.Connect();
-            this.client.AddCommand(mazeString);
-            string result = null;
-            result = client.GetResult();
-            return result;
+            //this.client.Connect();
+            //this.client.AddCommand(mazeString);
+            //string result = null;
+            //result = client.GetResult();
+            //return result;
+            return AddCommandAndGetResalut(mazeString);
         }
 
         public string SolveMaze()
         {
             string solve = "solve " + this.MazeName + " " + Properties.Settings.Default.SearchAlgorithm ;
-            this.client.Connect();
-            this.client.AddCommand(solve);
-            string result = null;
-            result = client.GetResult();
-            return result;
+            //this.client.Connect();
+            //this.client.AddCommand(solve);
+            //string result = null;
+            //result = client.GetResult();
+            //return result;
+            return AddCommandAndGetResalut(solve);
 
+        }
+
+        private string AddCommandAndGetResalut(string command)
+        {
+            this.client.Connect();
+            this.client.AddCommand(command);
+            string result = null;
+            return client.GetResult();
         }
 
         //public void CloseMaze()
