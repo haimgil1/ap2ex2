@@ -38,10 +38,6 @@ namespace WpfMaze
             this.Close();
         }
 
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void DetailsControl_Loaded(object sender, RoutedEventArgs e)
         {

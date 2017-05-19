@@ -55,9 +55,27 @@ namespace WpfMaze
             this.client.AddCommand(mazeString);
             string result = null;
             result = client.GetResult();
-
             return result;
         }
+
+        public string SolveMaze()
+        {
+            string solve = "solve " + this.MazeName + " " + Properties.Settings.Default.SearchAlgorithm ;
+            this.client.Connect();
+            this.client.AddCommand(solve);
+            string result = null;
+            result = client.GetResult();
+            return result;
+
+        }
+
+        //public void CloseMaze()
+        //{
+        //    string solve = "close " + this.MazeName;
+        //    this.client.Connect();
+        //    this.client.AddCommand(solve);
+
+        //}
 
     }
 }

@@ -45,15 +45,15 @@ namespace SearchAlgorithmsLib
         /// <param name="initialState">Initial state.</param>
         protected Solution<T> BackTrace(State<T> goal, State<T> initialState)
         {
-            Stack<State<T>> s = new Stack<State<T>>();
+            Queue<State<T>> s = new Queue<State<T>>();
             State<T> current = goal;
             while (!(current.CameFrom.Equals(initialState)))
             {
-                s.Push(current);
+                s.Enqueue(current);
                 current = current.CameFrom;
             }
-            s.Push(current);
-            s.Push(current.CameFrom);
+            s.Enqueue(current);
+            s.Enqueue(current.CameFrom);
             return new Solution<T>(s, GetNumberOfNodesEvaluated());
         }
     }

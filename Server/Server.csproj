@@ -43,6 +43,10 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SearchAlgorithmsLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SearchAlgorithmsLib\bin\Debug\netstandard1.4\SearchAlgorithmsLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -74,16 +78,6 @@
     <Compile Include="ObjectAdapter\Program.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SearchAlgorithmsLib\BestFirstSearch.cs" />
-    <Compile Include="SearchAlgorithmsLib\Dfs.cs" />
-    <Compile Include="SearchAlgorithmsLib\ISearchable.cs" />
-    <Compile Include="SearchAlgorithmsLib\ISearcher.cs" />
-    <Compile Include="SearchAlgorithmsLib\PriorityQueue.cs" />
-    <Compile Include="SearchAlgorithmsLib\QueueSearcher.cs" />
-    <Compile Include="SearchAlgorithmsLib\Searcher.cs" />
-    <Compile Include="SearchAlgorithmsLib\Solution.cs" />
-    <Compile Include="SearchAlgorithmsLib\StackSearcher.cs" />
-    <Compile Include="SearchAlgorithmsLib\State.cs" />
     <Compile Include="View\ServerConnect.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -93,13 +87,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Commands\" />
     <Folder Include="ObjectAdapter\bin\" />
     <Folder Include="ObjectAdapter\obj\" />
     <Folder Include="ObjectAdapter\Properties\" />
-    <Folder Include="SearchAlgorithmsLib\bin\" />
-    <Folder Include="SearchAlgorithmsLib\obj\" />
-    <Folder Include="SearchAlgorithmsLib\Properties\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ObjectAdapter\ObjectAdapter.csproj" />

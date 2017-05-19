@@ -17,10 +17,10 @@ namespace WpfMaze
     /// <summary>
     /// Interaction logic for EndGameWindow.xaml
     /// </summary>
-    public partial class EndGameWindow : Window
+    public partial class WarningWindow : Window
     {
         private bool resualt;
-        public EndGameWindow()
+        public WarningWindow()
         {
             InitializeComponent();
             resualt = false;

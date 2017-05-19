@@ -16,5 +16,7 @@ namespace WpfMaze
         Position InitialPos { get; set; }
         Position GoalPos { get; set; }
         string GenerateMaze();
+        string SolveMaze();
+        //void CloseMaze();
     }
 }

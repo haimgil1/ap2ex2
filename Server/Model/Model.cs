@@ -83,7 +83,7 @@ namespace Server
             }
 
            
-            //State<Position>.StatePool.Clear();
+            State<Position>.StatePool.Clear();
             modelData.mutexBfs.ReleaseMutex();
             return solution;
 
@@ -116,7 +116,7 @@ namespace Server
                 }
             }
 
-            //State<Position>.StatePool.Clear();
+            State<Position>.StatePool.Clear();
             modelData.mutexDfs.ReleaseMutex();
             return solution;
         }

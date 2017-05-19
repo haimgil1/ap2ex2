@@ -15,7 +15,7 @@ namespace SearchAlgorithmsLib
         /// <summary>
         /// The stack.
         /// </summary>
-        private Stack<State<T>> stack;
+        private Queue<State<T>> queue;
         /// <summary>
         /// The evaluated nodes.
         /// </summary>
@@ -25,9 +25,9 @@ namespace SearchAlgorithmsLib
         /// Initializes a new instance of the <see cref="T:SearchAlgorithmsLib.Solution`1"/> class.
         /// </summary>
         /// <param name="stack">Stack.</param>
-        public Solution(Stack<State<T>> stack, int evaluatedNodes)
+        public Solution(Queue<State<T>> queue, int evaluatedNodes)
         {
-            this.stack = stack;
+            this.queue = queue;
             this.evaluatedNodes = evaluatedNodes;
         }
 
@@ -35,9 +35,9 @@ namespace SearchAlgorithmsLib
         /// Gets the stack.
         /// </summary>
         /// <value>The stack.</value>
-        public Stack<State<T>> Stack
+        public Queue<State<T>> Queue
         {
-            get { return stack; }
+            get { return queue; }
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SearchAlgorithmsLib
         /// <returns>The size.</returns>
         public int Size()
         {
-            return stack.Count;
+            return queue.Count;
         }
     }
 }

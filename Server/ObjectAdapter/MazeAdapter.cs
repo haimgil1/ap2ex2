@@ -105,7 +105,7 @@ namespace ObjectAdapter
         public static string ToString(Solution<Position> solution)
         {
             StringBuilder sb = new StringBuilder();
-            Stack<State<Position>> printStack = new Stack<State<Position>>(solution.Stack);
+            Stack<State<Position>> printStack = new Stack<State<Position>>(solution.Queue);
             while (printStack.Count > 0)
             {
                 State<Position> state = printStack.Pop();

@@ -2,10 +2,14 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using UserControl = System.Windows.Controls.UserControl;
+
 public enum Direction { Up, Right, Down, Left }
 namespace WpfMaze
 {
@@ -234,21 +238,65 @@ namespace WpfMaze
 
         public Rectangle GetRectToGrid(int x, int y)
         {
+          
             Rectangle rect = new Rectangle();
             rect.Height = this.hightRect;
             rect.Width = this.widthRect;
             Grid.SetRow(rect, x);
             Grid.SetColumn(rect, y);
             return rect;
+
         }
         public void AddRectToGrid(int i,int j)
         {
             Rectangle rect = this.GetRectToGrid(i, j);
             rect.Fill = new SolidColorBrush(Colors.White);
-            grid.Children.Add(rect); // its not a wall
+            grid.Children.Add(rect);
+
 
         }
 
-        
+        public void SolvingMaze(string solution)
+        {
+            int row = CurrPosition.Row, col =CurrPosition.Col;
+            Position newPosition = new Position();
+            foreach (char c in solution)
+            {
+                switch (c-'0')
+                {
+                    case 0:
+                        col = CurrPosition.Col + 1;
+                        break;
+                    case 1:
+                        col = CurrPosition.Col - 1;
+                        break;
+                    case 2:
+                        row = CurrPosition.Row + 1;
+                        break;
+                    case 3:
+                        row = CurrPosition.Row - 1;
+                        break;
+                    default:
+                        break;
+                }
+
+                newPosition.Row = row;
+                newPosition.Col = col;
+                int i = CurrPosition.Row, j = CurrPosition.Col;
+                Dispatcher.Invoke((Action)delegate
+                {
+                    CurrPosition = newPosition;
+                    AddRectToGrid(i, j);
+
+                });
+                //CurrPosition = newPosition;
+               // AddRectToGrid(i, j);
+                System.Threading.Thread.Sleep(300);
+            }
+            
+        }
+
+     
+
     }
 }

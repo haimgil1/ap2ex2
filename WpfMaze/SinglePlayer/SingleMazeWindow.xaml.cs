@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MazeLib;
+using Newtonsoft.Json.Linq;
 
 namespace WpfMaze
 {
@@ -35,34 +36,44 @@ namespace WpfMaze
 
         private void MainMenu_Click(object sender, RoutedEventArgs e)
         {
-            EndGameWindow endGame = new EndGameWindow();
+            WarningWindow endGame = new WarningWindow();
             endGame.ShowDialog();
             if (endGame.Resualt)
             {
                 MainWindow win = (MainWindow)Application.Current.MainWindow;
                 win.Show();
                 this.Close();
+               
             }
             
         }
 
         private void Restart_Click(object sender, RoutedEventArgs e)
         {
-            EndGameWindow endGame = new EndGameWindow();
+            WarningWindow endGame = new WarningWindow();
             endGame.ShowDialog();
             if (endGame.Resualt)
             {
                 int i = mazeControl.CurrPosition.Row;
                 int j = mazeControl.CurrPosition.Col;
                 mazeControl.AddRectToGrid(i,j);
+                mazeControl.CurrPosition = mazeControl.InitialPos;
+                mazeControl.GoalPos = mazeControl.GoalPos;
             }
 
         }
 
         private void Solve_Click(object sender, RoutedEventArgs e)
         {
-           
-
+            mazeControl.CurrPosition = mazeControl.InitialPos;
+            string jsonSolution = this.vm.VM_SolveMaze();
+            string solution = (string)JObject.Parse(jsonSolution)["Solution"];
+            Task task = new Task(() =>
+            {
+                mazeControl.SolvingMaze(solution);
+            });
+            task.Start();
+           // mazeControl.SolvingMaze(solution);
         }
 
 
@@ -109,7 +120,7 @@ namespace WpfMaze
 
                         MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
                         mainWindow.Show();
-                        //this.Close();
+                        this.Close();
                         //todo 
                     }
                 }
