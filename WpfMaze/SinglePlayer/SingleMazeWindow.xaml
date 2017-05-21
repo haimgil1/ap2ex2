@@ -14,9 +14,9 @@
 
 
         <!--<local:MazeControl x:Name="grid" Canvas.Left="385" Rows="{Binding VM_MazeRows}" Cols="{Binding VM_MazeCols}" Maze="1000001011110001000110110100000101111000100011011" Height="500" Width="500" Canvas.Top="113" Margin="49,60,43,10"/>-->
-        <local:MazeControl x:Name="mazeControl" Canvas.Left="385" Rows="{Binding VM_MazeRows}" 
-        Cols="{Binding VM_MazeCols}" MazeName="{Binding VM_MazeString}" InitialPos="{Binding VM_InitialPos}"
-        GoalPos="{Binding VM_GoalPos}" Height="500" Width="500" Canvas.Top="113" Margin="49,60,43,10"/>
+        <local:MazeControl x:Name="mazeControl" Rows="{Binding VM_MazeRows}" 
+        Cols="{Binding VM_MazeCols}" MazeString="{Binding VM_MazeString}" MazeName="{Binding VM_MazeName}" 
+        InitialPos="{Binding VM_InitialPos}" Width="500" Height="500" GoalPos="{Binding VM_GoalPos}" />
 
     </Grid>
 </Window>

@@ -27,7 +27,7 @@ namespace WpfMaze
         public SingleMazeWindow()
         {
             InitializeComponent();
-            vm = new SinglePlayerViewModel(new SinglePlayerModel());
+            vm = new SinglePlayerViewModel(SinglePlayerModel.Instance);
             this.DataContext = vm;
             vm.VM_GenerateMaze();
             this.KeyDown += new System.Windows.Input.KeyEventHandler(Grid_KeyDown);
