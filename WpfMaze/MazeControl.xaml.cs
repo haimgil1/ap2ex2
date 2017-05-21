@@ -1,5 +1,6 @@
 ﻿using MazeLib;
 using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -29,6 +30,10 @@ namespace WpfMaze
         private double hightRect;
         private double widthRect;
 
+        public delegate void FinishedMazeSolveAnimation();
+
+        public event FinishedMazeSolveAnimation FinishedMazeAnimationEvent;
+
 
         public MazeControl()
         {
@@ -36,6 +41,8 @@ namespace WpfMaze
             grid = new Grid();
             width = this.Width;
             hight = this.Height;
+            this.hightRect = this.hight / Rows;
+            this.widthRect = this.width / Cols;
             Content = grid; // the content is grid.
             grid.ShowGridLines = true;
         }
@@ -164,8 +171,7 @@ namespace WpfMaze
         public void DrawMaze(string str)
         {
 
-            this.hightRect = this.hight / Rows;
-            this.widthRect = this.width / Cols;
+
 
             SetRows();
             SetCols();
@@ -208,12 +214,12 @@ namespace WpfMaze
 
         private void DrawInitialPos(Position pos, int flag)
         {
-            //double hightRect = this.hight / Rows;
-            //double widthRect = this.width / Cols;
+
             int x = pos.Row;
             int y = pos.Col;
             Rectangle rect = this.GetRectToGrid(x, y);
 
+            
             if (flag == 0)
             {
                 rect.Fill = MinyonImage;
@@ -226,15 +232,6 @@ namespace WpfMaze
 
             grid.Children.Add(rect);
         }
-
-        //private void DrawGoalPos(double hightRect, double widthRect)
-        //{
-
-        //    int x = (int)Char.GetNumericValue(GoalPos[1]);
-        //    int y = (int)Char.GetNumericValue(GoalPos[3]);
-        //    Rectangle rect = this.GetRectToGrid(x, y, hightRect, widthRect);
-        //    rect.Fill = new SolidColorBrush(Colors.Red);
-        //}
 
         public Rectangle GetRectToGrid(int x, int y)
         {
@@ -289,12 +286,18 @@ namespace WpfMaze
                 });
                 //CurrPosition = newPosition;
                // AddRectToGrid(i, j);
-                System.Threading.Thread.Sleep(300);
+                Thread.Sleep(300);
             }
-            
+
+            Dispatcher.Invoke((Action)delegate
+            {
+                AddRectToGrid(CurrPosition.Row, CurrPosition.Col);
+                CurrPosition = InitialPos;
+                GoalPos = GoalPos;
+
+            });
+
+            FinishedMazeAnimationEvent?.Invoke();
         }
-
-     
-
     }
 }

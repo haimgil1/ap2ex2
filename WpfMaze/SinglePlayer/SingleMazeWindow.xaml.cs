@@ -31,6 +31,7 @@ namespace WpfMaze
             this.DataContext = vm;
             vm.VM_GenerateMaze();
             this.KeyDown += new System.Windows.Input.KeyEventHandler(Grid_KeyDown);
+            this.mazeControl.FinishedMazeAnimationEvent += FinishAnimation;
         }
 
 
@@ -66,14 +67,18 @@ namespace WpfMaze
 
         private void Solve_Click(object sender, RoutedEventArgs e)
         {
+            mazeControl.AddRectToGrid(mazeControl.CurrPosition.Row, mazeControl.CurrPosition.Col);
             mazeControl.CurrPosition = mazeControl.InitialPos;
             string jsonSolution = this.vm.VM_SolveMaze();
             string solution = (string)JObject.Parse(jsonSolution)["Solution"];
+            this.IsEnabled = false;
             Task task = new Task(() =>
             {
                 mazeControl.SolvingMaze(solution);
+               
+
             });
-            task.Start();
+           task.Start();
         }
 
 
@@ -124,6 +129,16 @@ namespace WpfMaze
                     }
                 }
             }
+        }
+
+        public void FinishAnimation()
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                this.IsEnabled = true;
+
+            });
+
         }
 
 

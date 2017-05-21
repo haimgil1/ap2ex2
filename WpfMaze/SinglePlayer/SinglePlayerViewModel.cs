@@ -11,6 +11,7 @@ namespace WpfMaze
     {
         private ISinglePlayerModel model;
 
+
         public SinglePlayerViewModel(ISinglePlayerModel model)
         {
             this.model = model;
@@ -93,10 +94,6 @@ namespace WpfMaze
         {
             return this.model.SolveMaze();
         }
-
-
-
-
     }
 }
 
