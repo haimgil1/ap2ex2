@@ -24,7 +24,7 @@ namespace WpfMaze
         public SinglePlayerWindow()
         {
             InitializeComponent();
-            vm = new SinglePlayerViewModel(new SinglePlayerModel());
+            vm = new SinglePlayerViewModel(SinglePlayerModel.Instance);
             this.DataContext = vm;
 
         }

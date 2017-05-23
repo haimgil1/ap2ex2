@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:WpfMaze"
         mc:Ignorable="d"
-        Title="SettingWindow" Height="Auto" Width="Auto">
+        Title="SettingWindow" Height="250" Width="300">
     <Grid TextBlock.FontSize="14">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            
+
 
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -20,18 +20,11 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <controls:DetailsControl Grid.Column="1" Grid.Row="3">
+        <controls:DetailsControl Grid.Column="1" Grid.Row="3" Margin="36,6,65.333,3.667">
 
-            <!--<controls:DetailsControl.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="GreenYellow" Offset="0"/>
-                </LinearGradientBrush>
-            </controls:DetailsControl.Background>-->
+       </controls:DetailsControl>
 
-        </controls:DetailsControl>
-        
-        <Button x:Name="btnStart"  Grid.Row="3" HorizontalAlignment="Center"  Click="btnStart_Click" Margin="220,104.6,220,-35.4" Padding="5" Grid.ColumnSpan="2">Start game</Button>
+        <Button x:Name="btnStart"  Grid.Row="3" HorizontalAlignment="Center"  Click="btnStart_Click"  Padding="5" Grid.ColumnSpan="2" Margin="40,149,136.333,-79.333" Width="117">Start game</Button>
 
     </Grid>
 </Window>

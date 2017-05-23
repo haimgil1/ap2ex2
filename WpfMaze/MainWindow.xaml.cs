@@ -36,7 +36,9 @@ namespace WpfMaze
 
         private void multiButton_click(object sender, RoutedEventArgs e)
         {
-
+            MultiPlayerWindow multiWin = new MultiPlayerWindow();
+            multiWin.Show();
+            this.Close();
         }
 
         private void settingButton_Click(object sender, RoutedEventArgs e)

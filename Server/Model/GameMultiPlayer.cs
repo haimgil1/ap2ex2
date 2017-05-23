@@ -81,8 +81,8 @@ namespace Server
         /// </summary>
         public void SendMaze()
         {
-            Controller.SendToClient(maze.ToJSON(), client1);
-            Controller.SendToClient(maze.ToJSON(), client2);
+            Controller.SendToClient(maze.ToJSON().Replace("\r\n", ""), client1);
+            Controller.SendToClient(maze.ToJSON().Replace("\r\n", ""), client2);
         }
         /// <summary>
         /// Find the other the client.

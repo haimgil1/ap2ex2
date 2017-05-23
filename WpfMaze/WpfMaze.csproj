@@ -36,10 +36,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MazeGeneratorLib">
-      <HintPath>..\..\..\..\..\..\Downloads\MazeGeneratorLib.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\MazeGeneratorLib.dll</HintPath>
     </Reference>
     <Reference Include="MazeLib">
-      <HintPath>..\..\..\MazeLib.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\MazeLib.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\newtonsoft.json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -67,6 +67,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MultiPlayer\MultiMazeWindow.xaml.cs">
+      <DependentUpon>MultiMazeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MultiPlayer\MultiPlayerViewModel.cs" />
+    <Compile Include="MultiPlayer\MultiPlayerWindow.xaml.cs">
+      <DependentUpon>MultiPlayerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MultiPlayer\WatingWindow.xaml.cs">
+      <DependentUpon>WatingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WarningWindow.xaml.cs">
       <DependentUpon>WarningWindow.xaml</DependentUpon>
     </Compile>
@@ -98,6 +108,18 @@
       <DependentUpon>WinWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="DetailsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MultiPlayer\MultiMazeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MultiPlayer\MultiPlayerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MultiPlayer\WatingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

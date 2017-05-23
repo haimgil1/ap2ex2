@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,12 +22,20 @@ namespace WpfMaze
         private static bool isConnect = false; // Indicates connection between client - server.
         private Queue<string> commandQueue;
         private Queue<string> resultQueue;
+
+        
+
+        public delegate void PlayHandler(string direction);
+        public event PlayHandler playHandler;
+
+
         /// <summary>
         /// Connects to the server by the specified port.
         /// </summary>
         /// <param name="port">The port.</param>
         public void Connect()
         {
+            isConnect = false; 
             // Define the end point connection.
             IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
             // Update all the parameters to null.
@@ -36,6 +45,7 @@ namespace WpfMaze
             StreamWriter writer = null;
             commandQueue = new Queue<string>();
             resultQueue = new Queue<string>();
+            
 
             /* Delegate function that returns always void. Handles the receive data
                from the server. If the result from server is "singlePlayer" keeps the connection
@@ -72,8 +82,20 @@ namespace WpfMaze
                        // Prints the result from the server.
                        if (result != "")
                        {
-                           this.resultQueue.Enqueue(result);
-                           //Console.WriteLine(result);
+                           if (result.Contains("Direction"))
+                           {
+                               // call to event and update the model.
+                               JObject jObject = JObject.Parse(result);
+                               JToken jSolution = jObject["Direction"];
+                               string move = (string)jSolution;
+                               this.playHandler?.Invoke(move);
+                           }
+                           else {
+                               this.resultQueue.Enqueue(result);
+                               //writer.WriteLine(result);
+                               //writer.Flush();
+                               //Console.WriteLine(result);
+                           }
                        }
                    }
                    catch (Exception)
@@ -151,5 +173,6 @@ namespace WpfMaze
             return resultQueue.Dequeue();
            // return null;
         }
+
     }
 }

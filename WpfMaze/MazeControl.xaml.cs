@@ -1,6 +1,5 @@
 ﻿using MazeLib;
 using System;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -29,11 +28,8 @@ namespace WpfMaze
         private Maze mazeFromJson;
         private double hightRect;
         private double widthRect;
-
-        public delegate void FinishedMazeSolveAnimation();
-
-        public event FinishedMazeSolveAnimation FinishedMazeAnimationEvent;
-
+        private string mazeString;
+        private string direction;
 
         public MazeControl()
         {
@@ -41,8 +37,6 @@ namespace WpfMaze
             grid = new Grid();
             width = this.Width;
             hight = this.Height;
-            this.hightRect = this.hight / Rows;
-            this.widthRect = this.width / Cols;
             Content = grid; // the content is grid.
             grid.ShowGridLines = true;
         }
@@ -61,12 +55,16 @@ namespace WpfMaze
             get { return this.mazeFromJson; }
             set { this.mazeFromJson = value; }
         }
-
         public string MazeName
+        {
+            get;
+            set;
+        }
+        public string MazeString
         {
             get
             {
-                return this.mazeName;
+                return this.mazeString;
             }
             set
             {
@@ -77,7 +75,20 @@ namespace WpfMaze
             }
         }
 
-        
+        public string Direction
+        {
+            get
+            {
+                return this.direction;
+            }
+            set
+            {
+                this.direction = value;
+                this.Move(value);
+
+            }
+        }
+
 
         public Position InitialPos
         {
@@ -87,7 +98,7 @@ namespace WpfMaze
                 this.initialPos = value;
                 CurrPosition = this.initialPos;
             }
-          
+
         }
         public Position CurrPosition
         {
@@ -121,6 +132,10 @@ namespace WpfMaze
             DependencyProperty.Register("MazeName", typeof(string), typeof(MazeControl),
                 new PropertyMetadata(MazeNameChanges));
 
+        public static readonly DependencyProperty MazeStringD =
+         DependencyProperty.Register("MazeString", typeof(string), typeof(MazeControl),
+             new PropertyMetadata(MazeStringChanges));
+
         public static readonly DependencyProperty ColsD =
             DependencyProperty.Register("Cols", typeof(int), typeof(MazeControl),
                 new PropertyMetadata(ColsChanges));
@@ -137,6 +152,14 @@ namespace WpfMaze
             DependencyProperty.Register("GoalPos", typeof(Position), typeof(MazeControl),
                 new PropertyMetadata(GoalPosChanges));
 
+        public static readonly DependencyProperty CurrPositionD =
+            DependencyProperty.Register("CurrPosition", typeof(Position), typeof(MazeControl),
+        new PropertyMetadata(CurrPositionChanges));
+
+        public static readonly DependencyProperty DirectionD =
+    DependencyProperty.Register("Direction", typeof(string), typeof(MazeControl),
+        new PropertyMetadata(DirectionChanges));
+
         private static void MazeNameChanges(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             MazeControl mc = (MazeControl)d;
@@ -148,8 +171,12 @@ namespace WpfMaze
             MazeControl mc = (MazeControl)d;
             mc.Cols = (int)e.NewValue;
         }
-
-
+        
+     private static void MazeStringChanges(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            MazeControl mc = (MazeControl)d;
+            mc.MazeString = (string)e.NewValue;
+        }
         private static void RowsChanges(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             MazeControl mc = (MazeControl)d;
@@ -168,10 +195,25 @@ namespace WpfMaze
             mc.GoalPos = (Position)e.NewValue;
         }
 
+
+        private static void CurrPositionChanges(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            MazeControl mc = (MazeControl)d;
+            mc.CurrPosition = (Position)e.NewValue;
+        }
+
+        private static void DirectionChanges(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            MazeControl mc = (MazeControl)d;
+            mc.Direction = (string)e.NewValue;
+        }
+
+
         public void DrawMaze(string str)
         {
 
-
+            this.hightRect = this.hight / Rows;
+            this.widthRect = this.width / Cols;
 
             SetRows();
             SetCols();
@@ -214,12 +256,12 @@ namespace WpfMaze
 
         private void DrawInitialPos(Position pos, int flag)
         {
-
+            //double hightRect = this.hight / Rows;
+            //double widthRect = this.width / Cols;
             int x = pos.Row;
             int y = pos.Col;
             Rectangle rect = this.GetRectToGrid(x, y);
 
-            
             if (flag == 0)
             {
                 rect.Fill = MinyonImage;
@@ -233,9 +275,18 @@ namespace WpfMaze
             grid.Children.Add(rect);
         }
 
+        //private void DrawGoalPos(double hightRect, double widthRect)
+        //{
+
+        //    int x = (int)Char.GetNumericValue(GoalPos[1]);
+        //    int y = (int)Char.GetNumericValue(GoalPos[3]);
+        //    Rectangle rect = this.GetRectToGrid(x, y, hightRect, widthRect);
+        //    rect.Fill = new SolidColorBrush(Colors.Red);
+        //}
+
         public Rectangle GetRectToGrid(int x, int y)
         {
-          
+
             Rectangle rect = new Rectangle();
             rect.Height = this.hightRect;
             rect.Width = this.widthRect;
@@ -244,7 +295,7 @@ namespace WpfMaze
             return rect;
 
         }
-        public void AddRectToGrid(int i,int j)
+        public void AddRectToGrid(int i, int j)
         {
             Rectangle rect = this.GetRectToGrid(i, j);
             rect.Fill = new SolidColorBrush(Colors.White);
@@ -253,11 +304,11 @@ namespace WpfMaze
 
         public void SolvingMaze(string solution)
         {
-            int row = CurrPosition.Row, col =CurrPosition.Col;
+            int row = CurrPosition.Row, col = CurrPosition.Col;
             Position newPosition = new Position();
             foreach (char c in solution)
             {
-                switch (c-'0')
+                switch (c - '0')
                 {
                     case 0:
                         col = CurrPosition.Col + 1;
@@ -285,19 +336,55 @@ namespace WpfMaze
 
                 });
                 //CurrPosition = newPosition;
-               // AddRectToGrid(i, j);
-                Thread.Sleep(300);
+                // AddRectToGrid(i, j);
+                System.Threading.Thread.Sleep(300);
             }
 
-            Dispatcher.Invoke((Action)delegate
-            {
-                AddRectToGrid(CurrPosition.Row, CurrPosition.Col);
-                CurrPosition = InitialPos;
-                GoalPos = GoalPos;
-
-            });
-
-            FinishedMazeAnimationEvent?.Invoke();
         }
+
+
+        public void Move(string move)
+        {
+            int row = this.CurrPosition.Row, col = this.CurrPosition.Col;
+            Position newPosition = new Position();
+
+            switch (move)
+            {
+                case "down":
+                    row = this.CurrPosition.Row + 1;
+                    break;
+                case "up":
+                    row = this.CurrPosition.Row - 1;
+                    break;
+                case "left":
+                    col = this.CurrPosition.Col - 1;
+                    break;
+                case "right":
+                    col = this.CurrPosition.Col + 1;
+                    break;
+                default:
+                    break;
+            }
+            newPosition.Row = row;
+            newPosition.Col = col;
+            if (row >= 0 && row < this.Rows && col >= 0 && col < this.Cols)
+            {
+                int i = this.CurrPosition.Row, j = this.CurrPosition.Col;
+                if (this.MazeFromJson[row, col] == CellType.Free)
+                {
+                    this.CurrPosition = newPosition;
+                    this.AddRectToGrid(i, j);
+
+                }
+
+                if (this.GoalPos.Row == row && this.GoalPos.Col == col)
+                {
+                    // the other client win.
+                }
+            }
+        }
+
+
+
     }
 }
