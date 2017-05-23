@@ -67,15 +67,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MultiPlayer\IMultiPlayerModel.cs" />
     <Compile Include="MultiPlayer\MultiMazeWindow.xaml.cs">
       <DependentUpon>MultiMazeWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MultiPlayer\MultiPlayerModel.cs" />
     <Compile Include="MultiPlayer\MultiPlayerViewModel.cs" />
     <Compile Include="MultiPlayer\MultiPlayerWindow.xaml.cs">
       <DependentUpon>MultiPlayerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MultiPlayer\WatingWindow.xaml.cs">
       <DependentUpon>WatingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OtherPlayerWinWindow.xaml.cs">
+      <DependentUpon>OtherPlayerWinWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WarningWindow.xaml.cs">
       <DependentUpon>WarningWindow.xaml</DependentUpon>
@@ -120,6 +125,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MultiPlayer\WatingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OtherPlayerWinWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -199,6 +208,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Minion.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="SecondPlayer.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

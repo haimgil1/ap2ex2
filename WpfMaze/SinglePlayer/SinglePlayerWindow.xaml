@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:WpfMaze"
         mc:Ignorable="d"
-        Title="SettingWindow" Height="250" Width="300">
+        Title="SettingWindow" Height="200" Width="300">
     <Grid TextBlock.FontSize="14">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -20,11 +21,11 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <controls:DetailsControl Grid.Column="1" Grid.Row="3" Margin="36,6,65.333,3.667">
+        <controls:DetailsControl Grid.Column="1" Grid.Row="3" Margin="3" Loaded="DetailsControl_Loaded_1">
 
        </controls:DetailsControl>
 
-        <Button x:Name="btnStart"  Grid.Row="3" HorizontalAlignment="Center"  Click="btnStart_Click"  Padding="5" Grid.ColumnSpan="2" Margin="40,149,136.333,-79.333" Width="117">Start game</Button>
+        <Button x:Name="btnStart"  Grid.Row="4" HorizontalAlignment="Center"  VerticalAlignment="Bottom" Click="btnStart_Click"  Padding="3" Grid.ColumnSpan="2" Margin="3" Width="117">Start game</Button>
 
     </Grid>
 </Window>

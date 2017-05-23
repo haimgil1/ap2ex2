@@ -28,9 +28,10 @@ namespace WpfMaze
         public MultiPlayerWindow()
         {
             InitializeComponent();
-            vm = new MultiPlayerViewModel(SinglePlayerModel.Instance);
+            vm = new MultiPlayerViewModel(MultiPlayerModel.Instance);
             this.DataContext = vm;
             UpateComobox();
+
 
             //lbUsers.ItemsSource = users;
         }

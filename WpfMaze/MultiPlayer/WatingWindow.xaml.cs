@@ -25,7 +25,7 @@ namespace WpfMaze.MultiPlayer
         {
             
             InitializeComponent();
-            vm = new MultiPlayerViewModel(SinglePlayerModel.Instance);
+            vm = new MultiPlayerViewModel(MultiPlayerModel.Instance);
             this.DataContext = vm;
             //this.StartTheGame();
         }

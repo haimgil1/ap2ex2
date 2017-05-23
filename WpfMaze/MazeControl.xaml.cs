@@ -18,6 +18,12 @@ namespace WpfMaze
     /// </summary>
     public partial class MazeControl : UserControl
     {
+        public delegate void FinishedMazeAnimation();
+        public delegate void MoveDirection(string direction);
+
+        public event MoveDirection MoveDirectionEvent;
+        public event FinishedMazeAnimation FinishedMazeAnimationEvent;
+
         private Grid grid;
         private double hight;
         private double width;
@@ -29,7 +35,7 @@ namespace WpfMaze
         private double hightRect;
         private double widthRect;
         private string mazeString;
-        private string direction;
+        private Position direction;
 
         public MazeControl()
         {
@@ -75,7 +81,7 @@ namespace WpfMaze
             }
         }
 
-        public string Direction
+        public Position Direction
         {
             get
             {
@@ -83,9 +89,10 @@ namespace WpfMaze
             }
             set
             {
+
                 this.direction = value;
                 this.Move(value);
-
+                this.DrawInitialPos(value, 2);
             }
         }
 
@@ -127,7 +134,7 @@ namespace WpfMaze
 
 
 
-        // Using a DependencyProperty as the backing store for Maze.  This enables animation, styling, binding, etc...
+        // Using a DependencyProperty as the backing store for Maze. This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MazeNameD =
             DependencyProperty.Register("MazeName", typeof(string), typeof(MazeControl),
                 new PropertyMetadata(MazeNameChanges));
@@ -157,7 +164,7 @@ namespace WpfMaze
         new PropertyMetadata(CurrPositionChanges));
 
         public static readonly DependencyProperty DirectionD =
-    DependencyProperty.Register("Direction", typeof(string), typeof(MazeControl),
+            DependencyProperty.Register("Direction", typeof(Position), typeof(MazeControl),
         new PropertyMetadata(DirectionChanges));
 
         private static void MazeNameChanges(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -171,8 +178,8 @@ namespace WpfMaze
             MazeControl mc = (MazeControl)d;
             mc.Cols = (int)e.NewValue;
         }
-        
-     private static void MazeStringChanges(DependencyObject d, DependencyPropertyChangedEventArgs e)
+
+        private static void MazeStringChanges(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             MazeControl mc = (MazeControl)d;
             mc.MazeString = (string)e.NewValue;
@@ -205,7 +212,7 @@ namespace WpfMaze
         private static void DirectionChanges(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             MazeControl mc = (MazeControl)d;
-            mc.Direction = (string)e.NewValue;
+            mc.Direction = (Position)e.NewValue;
         }
 
 
@@ -232,8 +239,6 @@ namespace WpfMaze
                     grid.Children.Add(rect);
                 }
             }
-            //  this.DrawInitialPos(hightRect, widthRect);
-            // this.DrawGoalPos(hightRect, widthRect);
         }
 
         private void SetRows()
@@ -256,8 +261,6 @@ namespace WpfMaze
 
         private void DrawInitialPos(Position pos, int flag)
         {
-            //double hightRect = this.hight / Rows;
-            //double widthRect = this.width / Cols;
             int x = pos.Row;
             int y = pos.Col;
             Rectangle rect = this.GetRectToGrid(x, y);
@@ -266,10 +269,14 @@ namespace WpfMaze
             {
                 rect.Fill = MinyonImage;
             }
-
-            else
+            else if (flag == 1)
             {
                 rect.Fill = ExitImage;
+            }
+            
+            else
+            {
+                rect.Fill = SecondPlayer;
             }
 
             grid.Children.Add(rect);
@@ -335,56 +342,103 @@ namespace WpfMaze
                     AddRectToGrid(i, j);
 
                 });
-                //CurrPosition = newPosition;
-                // AddRectToGrid(i, j);
+
+
                 System.Threading.Thread.Sleep(300);
             }
+
+            Dispatcher.Invoke((Action)delegate
+            {
+                this.RestartTheGame();
+
+            });
 
         }
 
 
-        public void Move(string move)
+        public void RestartTheGame()
         {
-            int row = this.CurrPosition.Row, col = this.CurrPosition.Col;
-            Position newPosition = new Position();
+            int i = CurrPosition.Row;
+            int j = CurrPosition.Col;
+            AddRectToGrid(i, j);
+            CurrPosition = InitialPos;
+            GoalPos = GoalPos;
+        }
 
-            switch (move)
+
+        public void Move(Position position)
+        {
+
+            int i = this.CurrPosition.Row, j = this.CurrPosition.Col;
+            this.CurrPosition = position;
+            this.AddRectToGrid(i, j);
+
+            //if (this.GoalPos.Row == position.Row && this.GoalPos.Col == position.Col)
+            //{
+                //todo
+
+                //OtherPlayerWinWindow winWindow = new OtherPlayerWinWindow();
+                //winWindow.ShowDialog();
+                //if (winWindow.Resualt)
+                //{
+                //    FinishedMazeAnimationEvent?.Invoke();
+                //}
+                // the other client win.
+            //}
+        }
+
+
+
+        public void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            int row = CurrPosition.Row, col = CurrPosition.Col;
+            Position newPosition = new Position();
+            string move = null;
+
+            switch (e.Key)
             {
-                case "down":
-                    row = this.CurrPosition.Row + 1;
+                case Key.Down:
+                    row = CurrPosition.Row + 1;
+                    move = "down";
                     break;
-                case "up":
-                    row = this.CurrPosition.Row - 1;
+                case Key.Up:
+                    row = CurrPosition.Row - 1;
+                    move = "up";
                     break;
-                case "left":
-                    col = this.CurrPosition.Col - 1;
+                case Key.Left:
+                    col = CurrPosition.Col - 1;
+                    move = "left";
                     break;
-                case "right":
-                    col = this.CurrPosition.Col + 1;
+                case Key.Right:
+                    col = CurrPosition.Col + 1;
+                    move = "right";
                     break;
                 default:
                     break;
             }
+
             newPosition.Row = row;
             newPosition.Col = col;
-            if (row >= 0 && row < this.Rows && col >= 0 && col < this.Cols)
+            if (row >= 0 && row < Rows && col >= 0 && col < Cols)
             {
-                int i = this.CurrPosition.Row, j = this.CurrPosition.Col;
-                if (this.MazeFromJson[row, col] == CellType.Free)
+                int i = CurrPosition.Row, j = CurrPosition.Col;
+                if (MazeFromJson[row, col] == CellType.Free)
                 {
-                    this.CurrPosition = newPosition;
-                    this.AddRectToGrid(i, j);
+                    MoveDirectionEvent?.Invoke(move);
+
+                    CurrPosition = newPosition;
+                    AddRectToGrid(i, j);
 
                 }
 
-                if (this.GoalPos.Row == row && this.GoalPos.Col == col)
+                if (GoalPos.Row == row && GoalPos.Col == col)
                 {
-                    // the other client win.
+                    WinWindow winWindow = new WinWindow();
+                    winWindow.ShowDialog();
+                    FinishedMazeAnimationEvent?.Invoke();
+
                 }
             }
         }
-
-
-
     }
 }

@@ -22,13 +22,13 @@
         <Label x:Name="label" Content="Other player's board" Grid.Column="2" HorizontalAlignment="Left" Margin="180.333,22,0,0" VerticalAlignment="Top" Height="26" Width="119" Grid.RowSpan="2"/>
         <Label x:Name="label1" Content="My board" HorizontalAlignment="Left" Margin="145,16,0,0" VerticalAlignment="Top" Height="26" Width="61"/>
 
-        <local:MazeControl x:Name="mazeControl1" Rows="{Binding VM_MazeRows}" 
+        <local:MazeControl x:Name="MazeControl1" Rows="{Binding VM_MazeRows}" 
         Cols="{Binding VM_MazeCols}" MazeString="{Binding VM_MazeString}" MazeName="{Binding VM_MazeName}" 
         InitialPos="{Binding VM_InitialPos}" GoalPos="{Binding VM_GoalPos}" Grid.ColumnSpan="1" Margin="28,10.333,36,-0.333" Grid.Row="1" />
 
         <local:MazeControl x:Name="mazeControl2" Rows="{Binding VM_MazeRows}" 
         Cols="{Binding VM_MazeCols}" MazeString="{Binding VM_MazeString}" MazeName="{Binding VM_MazeName}" 
-        InitialPos="{Binding VM_InitialPos}" GoalPos="{Binding VM_GoalPos}" CurrPosition="{Binding VM_CurrPosition}" Direction="{Binding VM_Direction}" Margin="14.333,10.333,10.333,-0.333" Grid.Column="2" Grid.Row="1"/>
+        InitialPos="{Binding VM_InitialPos}" GoalPos="{Binding VM_GoalPos}"  Direction="{Binding VM_Direction}" Margin="14.333,10.333,10.333,-0.333" Grid.Column="2" Grid.Row="1"/>
     </Grid>
 
 </Window>

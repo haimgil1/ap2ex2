@@ -15,21 +15,29 @@ using System.Windows.Shapes;
 namespace WpfMaze
 {
     /// <summary>
-    /// Interaction logic for WinWindow.xaml
+    /// Interaction logic for OtherPlayerWinWindow.xaml
     /// </summary>
-    public partial class WinWindow : Window
+    public partial class OtherPlayerWinWindow : Window
     {
-        public WinWindow()
+        private bool resualt;
+        public OtherPlayerWinWindow()
         {
             InitializeComponent();
         }
 
+        public bool Resualt
+        {
+            get { return resualt; }
+            set { resualt = value; }
+        }
+
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow win = new MainWindow();
-           // MainWindow win = (MainWindow)Application.Current.MainWindow;
+            Resualt = true;
+            MainWindow win = (MainWindow)Application.Current.MainWindow;
             win.Show();
             this.Close();
         }
+
     }
 }

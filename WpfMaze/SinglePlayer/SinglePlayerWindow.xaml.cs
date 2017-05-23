@@ -43,5 +43,10 @@ namespace WpfMaze
         {
 
         }
+
+        private void DetailsControl_Loaded_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

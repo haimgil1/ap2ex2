@@ -22,12 +22,31 @@ namespace WpfMaze
         private static bool isConnect = false; // Indicates connection between client - server.
         private Queue<string> commandQueue;
         private Queue<string> resultQueue;
+        private TcpClient client = null;
+        private NetworkStream stream = null;
+        private  StreamReader reader = null;
+        private StreamWriter writer = null;
+        private IPEndPoint ep;
+        private int port;
+        private string ip;
 
-        
 
         public delegate void PlayHandler(string direction);
         public event PlayHandler playHandler;
 
+        public ClientConnect()
+        {
+            
+            // Define the end point connection.
+            this.port = Properties.Settings.Default.ServerPort;
+            this.ip = Properties.Settings.Default.ServerIP.Replace("\"","");
+            //this.ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), port);
+            this.ep = new IPEndPoint(IPAddress.Parse(this.ip), port);
+            // Update all the parameters to null.
+
+            commandQueue = new Queue<string>();
+            resultQueue = new Queue<string>();
+        }
 
         /// <summary>
         /// Connects to the server by the specified port.
@@ -36,15 +55,7 @@ namespace WpfMaze
         public void Connect()
         {
             isConnect = false; 
-            // Define the end point connection.
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
-            // Update all the parameters to null.
-            TcpClient client = null;
-            NetworkStream stream = null;
-            StreamReader reader = null;
-            StreamWriter writer = null;
-            commandQueue = new Queue<string>();
-            resultQueue = new Queue<string>();
+         
             
 
             /* Delegate function that returns always void. Handles the receive data
@@ -164,7 +175,7 @@ namespace WpfMaze
         {
             commandQueue.Enqueue(newCommand);
         }
-        public string GetResult ()
+        public string GetResult()
         {  
             while (resultQueue.Count == 0)
             {

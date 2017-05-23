@@ -11,9 +11,9 @@ namespace WpfMaze.MultiPlayer
 {
     class MultiPlayerViewModel : ViewModel
     {
-        private ISinglePlayerModel model;
+        private IMultiPlayerModel model;
 
-        public MultiPlayerViewModel(ISinglePlayerModel model)
+        public MultiPlayerViewModel(IMultiPlayerModel model)
         {
             this.model = model;
             model.PropertyChanged +=
@@ -90,7 +90,7 @@ namespace WpfMaze.MultiPlayer
             }
         }
 
-        public string VM_Direction
+        public Position VM_Direction
         {
             get { return model.Direction; }
             set
@@ -111,8 +111,8 @@ namespace WpfMaze.MultiPlayer
 
         public List<string> VM_ListOfGames()
         {
-            List<string> aa =  model.ListOfGames();
-            return aa;
+            return model.ListOfGames();
+           
         }
 
         public void VM_StartMaze()

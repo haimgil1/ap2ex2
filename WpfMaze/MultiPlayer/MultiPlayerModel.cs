@@ -1,38 +1,44 @@
-﻿using MazeLib;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MazeLib;
+using Newtonsoft.Json;
 
-namespace WpfMaze
+namespace WpfMaze.MultiPlayer
 {
-  public  class SinglePlayerModel : ISinglePlayerModel
+    class MultiPlayerModel : IMultiPlayerModel, INotifyPropertyChanged
     {
         ClientConnect client;
-        private static SinglePlayerModel instance;
-        private string direction;
+        private static MultiPlayerModel instance;
+        private Position direction;
         private Position currentPosition;
         private Position startPos;
         private static Mutex singletonMutex = new Mutex();
 
-        private SinglePlayerModel()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private MultiPlayerModel()
         {
             this.client = new ClientConnect();
-            
+            this.client.playHandler += delegate (string direction)
+            {
+                Console.WriteLine(direction);
+                //Direction = direction;
+                UpdatePosition(direction);
+            };
         }
-
-        public static SinglePlayerModel Instance
+        public static MultiPlayerModel Instance
         {
             get
             {
                 singletonMutex.WaitOne();
                 if (instance == null)
                 {
-                    instance = new SinglePlayerModel();
+                    instance = new MultiPlayerModel();
                 }
                 singletonMutex.ReleaseMutex();
                 return instance;
@@ -60,6 +66,7 @@ namespace WpfMaze
             set;
         }
 
+
         public Position InitialPos
         {
             get
@@ -68,8 +75,10 @@ namespace WpfMaze
             }
             set
             {
+                this.direction = value;
                 this.startPos = value;
                 this.CurrPosition = value;
+
             }
         }
         public Position GoalPos
@@ -78,7 +87,7 @@ namespace WpfMaze
             set;
         }
 
-        public string Direction
+        public Position Direction
         {
             get
             {
@@ -87,7 +96,7 @@ namespace WpfMaze
             set
             {
                 this.direction = value;
-               
+                NotifyPropertyChanged("Direction");
             }
         }
 
@@ -100,37 +109,46 @@ namespace WpfMaze
             set
             {
                 this.currentPosition = value;
-                
+                NotifyPropertyChanged("CurrPosition");
             }
         }
 
 
         public string GenerateMaze()
         {
-            //this.client.Connect();
             string mazeString = "generate " + this.MazeName + " " + this.MazeRows +
-                " " + this.MazeCols;
-       
+                                " " + this.MazeCols;
             return AddCommandAndGetResalut(mazeString);
         }
 
-        public string SolveMaze()
-        {
-            string solve = "solve " + this.MazeName + " " + Properties.Settings.Default.SearchAlgorithm ;
-    
-            return AddCommandAndGetResalut(solve);
-
-        }
 
         public string StartMaze()
         {
-            
             string mazeString = "start " + this.MazeName + " " + this.MazeRows +
-                " " + this.MazeCols;
+                                " " + this.MazeCols;
             return AddCommandAndGetResalut(mazeString);
         }
 
-        
+        public string JoinMaze()
+        {
+            string mazeString = "join " + this.MazeName;
+            return AddCommandAndGetResalut(mazeString);
+        }
+
+        public List<string> ListOfGames()
+        {
+            //this.client.Connect();
+            //this.client.AddCommand("list");
+            string list = AddCommandAndGetResalut("list");
+            return JsonConvert.DeserializeObject<List<string>>(list);
+        }
+
+        public void Play(string move)
+        {
+            string playString = "play " + move;
+            this.client.AddCommand(playString);
+        }
+
         private string AddCommandAndGetResalut(string command)
         {
             this.client.Connect();
@@ -138,7 +156,35 @@ namespace WpfMaze
             return client.GetResult();
         }
 
-      
+        public void NotifyPropertyChanged(string propName)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
+        public void UpdatePosition(string str)
+        {
+            int row = this.Direction.Row, col = this.Direction.Col;
+            Position point = new Position();
+            switch (str)
+            {
+                case "down":
+                    row++;
+                    break;
+                case "up":
+                    row--;
+                    break;
+                case "left":
+                    col--;
+                    break;
+                case "right":
+                    col++;
+                    break;
+            }
+            point.Row = row;
+            point.Col = col;
+            Direction = point;
+        }
+
 
     }
 }

@@ -58,7 +58,7 @@ namespace Server.Commands
             else
             {
                 Controller.NestedErrors nested = new Controller.NestedErrors("Error exist game", client);
-		}
+		    }
 		    model.GetmodelData().mutexGamePlaying.ReleaseMutex();
 		    model.GetmodelData().mutexGameWating.ReleaseMutex();
             return "multiPlayer";

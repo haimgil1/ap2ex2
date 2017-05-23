@@ -232,13 +232,15 @@ namespace Server
         public GameMultiPlayer FindGameByClient(TcpClient client)
         {
             GameMultiPlayer game = null;
+            modelData.mutexGamePlaying.WaitOne();
             // Over on GameWating dictionary.
             foreach (GameMultiPlayer value in modelData.GameWating.Values)
             {
                 // Check if the client exist.
                 if (value.GetClient1() == client || value.GetClient2() == client)
                 {
-                    game = value;
+                    modelData.mutexGamePlaying.ReleaseMutex();
+                    return value;
                 }
             }
             // Over on GamesPlaying dictionary.
@@ -247,9 +249,12 @@ namespace Server
                 // Check if the client exist.
                 if (value.GetClient1() == client || value.GetClient2() == client)
                 {
-                    game = value;
+                    modelData.mutexGamePlaying.ReleaseMutex();
+                    return value;
+                   
                 }
             }
+            modelData.mutexGamePlaying.ReleaseMutex();
             return game;
         }
 
